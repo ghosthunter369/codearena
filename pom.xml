@@ -116,12 +116,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot-starter</artifactId>
-            <version>1.44.0</version>
-        </dependency>
+
         <!-- elasticsearch-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -143,6 +138,22 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.2.23</version>
+        </dependency>
+        <dependency>
+            <groupId>org.stefanie</groupId>
+            <artifactId>codearena-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mysql</groupId>
+                    <artifactId>mysql-connector-j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <dependencyManagement>

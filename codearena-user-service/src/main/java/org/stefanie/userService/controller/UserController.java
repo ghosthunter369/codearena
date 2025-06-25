@@ -1,5 +1,6 @@
 package org.stefanie.userService.controller;
 
+import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -212,7 +213,6 @@ public class UserController {
      * @return
      */
     @GetMapping("/get")
-    @SaCheckRole(UserConstant.ADMIN_ROLE)
     public BaseResponse<User> getUserById(long id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);

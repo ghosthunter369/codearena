@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import common.ErrorCode;
 import constant.CommonConstant;
 import constant.RedisConstant;
+import constant.UserConstant;
 import exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.user.UserQueryRequest;
@@ -83,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setUserRole(UserConstant.DEFAULT_ROLE);  // 设置默认角色
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
@@ -194,7 +196,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean isAdmin(User user) {
-        return user != null && UserRoleEnum.ADMIN.getValue().equals(user.getUserRole());
+        return user != null && UserConstant.ADMIN_ROLE.equals(user.getUserRole());
     }
 
     /**

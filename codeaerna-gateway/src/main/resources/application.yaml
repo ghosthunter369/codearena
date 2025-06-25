@@ -26,12 +26,28 @@ spring:
           uri: lb://codearena-search-service
           predicates:
             - Path=/api/search/**
+        - id: user-docs
+          uri: http://localhost:8101
+          predicates:
+            - Path=/api/user/v3/api-docs
+        - id: user-swagger
+          uri: http://localhost:8101
+          predicates:
+            - Path=/api/user/swagger-ui.html
         - id: codearena-user-service
           uri: lb://codearena-user-service
           predicates:
             - Path=/api/user/**
+
+
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis服务器地址
+    host: localhost
+    # Redis服务器连接端口
+    port: 6379
   # 数据库配置
-  # todo 需替换配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/codearena_db
@@ -107,6 +123,7 @@ spring:
   main:
     web-application-type:
       reactive
+    allow-bean-definition-overriding: true
   application:
       name: codearena-gateway
 server:
@@ -122,3 +139,13 @@ knife4j:
       enabled: true
       # ④ 第四行配置，聚合子服务全部为Swagger2规范的文档
       version: openapi3
+dubbo:
+  application:
+    name: codeaerna-gateway
+  registry:
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: -1 # 自动分配端口
+  provider:
+    timeout: 3000
