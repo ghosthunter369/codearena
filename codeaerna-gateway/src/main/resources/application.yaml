@@ -34,6 +34,14 @@ spring:
           uri: http://localhost:8101
           predicates:
             - Path=/api/user/swagger-ui.html
+        - id: user-login
+          uri: http://localhost:8101
+          predicates:
+            - Path=/api/user/login
+        - id: user-register
+          uri: http://localhost:8101
+          predicates:
+            - Path=/api/user/register
         - id: codearena-user-service
           uri: lb://codearena-user-service
           predicates:

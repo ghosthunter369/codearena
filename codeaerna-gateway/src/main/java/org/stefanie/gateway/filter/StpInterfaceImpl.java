@@ -2,6 +2,7 @@ package org.stefanie.gateway.filter;
 
 import cn.dev33.satoken.stp.StpInterface;
 import model.entity.User;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.context.annotation.Configuration;
 import org.stefanie.serviceClient.UserRpcService;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Configuration
 public class StpInterfaceImpl implements StpInterface {
-    @Resource
+    @DubboReference
     private UserRpcService userRpcService;
 
     @Override
