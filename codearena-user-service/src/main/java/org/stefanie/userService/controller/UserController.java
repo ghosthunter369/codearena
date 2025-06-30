@@ -1,6 +1,5 @@
 package org.stefanie.userService.controller;
 
-import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -127,7 +126,6 @@ public class UserController {
      * @return
      */
     @PostMapping("/add")
-    @SaCheckRole(UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
         if (userAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -168,7 +166,6 @@ public class UserController {
      * @return
      */
     @PostMapping("/update")
-    @SaCheckRole(UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> updateUser(@RequestBody UserUpdateRequest userUpdateRequest,
                                             HttpServletRequest request) {
         if (userUpdateRequest == null || userUpdateRequest.getId() == null) {

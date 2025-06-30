@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Configuration
 public class StpInterfaceImpl implements StpInterface {
-    @DubboReference
+    @DubboReference(group = "dubbo-group")
     private UserRpcService userRpcService;
 
     @Override

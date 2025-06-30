@@ -8,7 +8,7 @@ import org.stefanie.userService.service.UserService;
 
 import javax.annotation.Resource;
 
-@DubboService
+@DubboService(group = "dubbo-group")
 public class UserRpcServiceImpl implements UserRpcService {
 
     @Resource

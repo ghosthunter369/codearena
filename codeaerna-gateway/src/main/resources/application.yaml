@@ -152,6 +152,7 @@ dubbo:
     name: codeaerna-gateway
   registry:
     address: nacos://127.0.0.1:8848
+    group: dubbo-group
   protocol:
     name: dubbo
     port: -1 # 自动分配端口
