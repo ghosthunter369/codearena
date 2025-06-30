@@ -1,7 +1,7 @@
 # 公共配置文件
 spring:
   application:
-    name: codearena-user-service
+    name: codearena-judge-service
   #    active: dev
   # 支持 swagger3
   mvc:
@@ -113,9 +113,9 @@ spring:
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8105
   servlet:
-    context-path: /api/user
+    context-path: /api/judge
     # cookie 30 天过期
     session:
       cookie:
@@ -171,7 +171,7 @@ knife4j:
       default:
         api-rule: package
         api-rule-resources:
-          - org.stefanie.mapper.controller
+          - org.stefanie.judgeService.controller
 # AI 大模型接入（目前是火山引擎 DeepSeek）
 ai:
   apiKey: 填写自己的 API Key
@@ -183,16 +183,4 @@ springdoc:
   group-configs:
     - group: default
       paths-to-match: /**
-      packages-to-scan: org.stefanie.userService.controller
-dubbo:
-  application:
-    name: codearena-user-service
-  registry:
-    address: nacos://127.0.0.1:8848
-  protocol:
-    name: dubbo
-    port: -1 # 自动分配端口
-  provider:
-    timeout: 3000
-  scan:
-    base-packages: org.stefanie.userService.rpc
+      packages-to-scan: org.stefanie.judgeService.controller

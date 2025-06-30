@@ -1,5 +1,6 @@
 package org.stefanie.searchService;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @ServletComponentScan
+@MapperScan("org.stefanie.searchService.mapper")
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class SearchServiceApplication {
 

@@ -1,8 +1,7 @@
 # 公共配置文件
 spring:
   application:
-    name: codearena-user-service
-  #    active: dev
+    name: codearena-ai-service
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -94,11 +93,6 @@ spring:
         deny: # 拒绝访问的地址，deny优先于allow，如果在deny列表中，就算在allow列表中，也会被拒绝
   # Redis 配置
   # todo 需替换配置，然后取消注释
-  redis:
-    database: 1
-    host: localhost
-    port: 6379
-    timeout: 5000
   #    password: 123456
   # Elasticsearch 配置
   # todo 需替换配置，然后取消注释
@@ -111,11 +105,17 @@ spring:
     multipart:
       # 大小限制
       max-file-size: 10MB
+  data:
+    redis:
+      database: 1
+      host: localhost
+      port: 6379
+      timeout: 5000
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8106
   servlet:
-    context-path: /api/user
+    context-path: /api/ai
     # cookie 30 天过期
     session:
       cookie:
@@ -183,16 +183,4 @@ springdoc:
   group-configs:
     - group: default
       paths-to-match: /**
-      packages-to-scan: org.stefanie.userService.controller
-dubbo:
-  application:
-    name: codearena-user-service
-  registry:
-    address: nacos://127.0.0.1:8848
-  protocol:
-    name: dubbo
-    port: -1 # 自动分配端口
-  provider:
-    timeout: 3000
-  scan:
-    base-packages: org.stefanie.userService.rpc
+      packages-to-scan: org.stefanie.searchService.controller

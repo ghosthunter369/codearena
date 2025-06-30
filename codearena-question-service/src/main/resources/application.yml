@@ -1,8 +1,7 @@
 # 公共配置文件
 spring:
   application:
-    name: codearena-user-service
-  #    active: dev
+    name: codearena-question-service
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -113,9 +112,9 @@ spring:
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8104
   servlet:
-    context-path: /api/user
+    context-path: /api/question
     # cookie 30 天过期
     session:
       cookie:
@@ -183,16 +182,4 @@ springdoc:
   group-configs:
     - group: default
       paths-to-match: /**
-      packages-to-scan: org.stefanie.userService.controller
-dubbo:
-  application:
-    name: codearena-user-service
-  registry:
-    address: nacos://127.0.0.1:8848
-  protocol:
-    name: dubbo
-    port: -1 # 自动分配端口
-  provider:
-    timeout: 3000
-  scan:
-    base-packages: org.stefanie.userService.rpc
+      packages-to-scan: org.stefanie.searchService.controller

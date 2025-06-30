@@ -25,10 +25,45 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     public SaReactorFilter getSaReactorFilter() {
         return new SaReactorFilter()
                 .addInclude("/**")
-                .addExclude("/doc.html", "/favicon.ico", "/webjars/**", "/swagger-resources/**",
-                        "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/swagger-config",
-                        "/api/user/v3/api-doc", "/api/user/v3/api-docs", "/api/user/v3/api-docs/swagger-config",
-                        "/api/user/swagger-resources/**")
+                .addExclude(
+                        "/doc.html",
+                        "/favicon.ico",
+                        "/webjars/**",
+                        "/swagger-resources/**",
+                        "/v2/api-docs",
+                        "/v3/api-docs",
+                        "/v3/api-docs/swagger-config",
+
+                        // user 模块文档
+                        "/api/user/v3/api-doc",
+                        "/api/user/v3/api-docs",
+                        "/api/user/v3/api-docs/swagger-config",
+                        "/api/user/swagger-resources/**",
+
+                        // judge 模块文档
+                        "/api/judge/v3/api-doc",
+                        "/api/judge/v3/api-docs",
+                        "/api/judge/v3/api-docs/swagger-config",
+                        "/api/judge/swagger-resources/**",
+
+                        // question 模块文档
+                        "/api/question/v3/api-doc",
+                        "/api/question/v3/api-docs",
+                        "/api/question/v3/api-docs/swagger-config",
+                        "/api/question/swagger-resources/**",
+
+                        // ai 模块文档
+                        "/api/ai/v3/api-doc",
+                        "/api/ai/v3/api-docs",
+                        "/api/ai/v3/api-docs/swagger-config",
+                        "/api/ai/swagger-resources/**",
+
+                        // search 模块文档
+                        "/api/search/v3/api-doc",
+                        "/api/search/v3/api-docs",
+                        "/api/search/v3/api-docs/swagger-config",
+                        "/api/search/swagger-resources/**"
+                )
 
                 .setAuth(obj -> {
                     String path = SaHolder.getRequest().getRequestPath();
@@ -39,6 +74,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                     }
                     // Step1：必须登录
                     StpUtil.checkLogin();
+                    System.out.println(StpUtil.isLogin());
                     System.out.println(StpUtil.getRoleList());
                     System.out.println(StpUtil.getLoginId());
                     System.out.println(StpUtil.hasPermission("admin"));
