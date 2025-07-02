@@ -94,3 +94,12 @@ create table if not exists mock_interview
     isDelete       tinyint  default 0                 not null comment '是否删除（逻辑删除）',
     index idx_userId (userId)
 ) comment '模拟面试' collate = utf8mb4_unicode_ci;
+
+
+-- 新增question表字段
+alter table question add column `submitNum` int(11) default 0 not null comment '题目提交数';
+alter table question add column `acceptedNum` int(11) default 0 not null comment '题目通过数';
+alter table question add column `judgeCase` json   comment '判题用例（json 数组）';
+alter table question add column `judgeConfig` json   comment '判题配置（json 对象）';
+alter table question add column `questionType` json   comment '题目类型';
+

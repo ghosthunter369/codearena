@@ -13,11 +13,11 @@ import javax.annotation.Resource;
  
  */
 @RestController
-@RequestMapping("/post")
 @Slf4j
 public class QuestionController {
-    @RequestMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
+
+    @Resource
+    private QuestionService questionService;
+
+
 }

@@ -1,6 +1,9 @@
 package org.stefanie.serviceClient;
 
 import model.entity.User;
+import model.vo.LoginUserVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface UserRpcService {
     /**
@@ -8,4 +11,11 @@ public interface UserRpcService {
      * @return
      */
     User getUserById(Long id);
+    /**
+     * 获取当前登录用户
+     *
+     * @param request
+     * @return
+     */
+    LoginUserVO getLoginUser(HttpServletRequest request);
 }

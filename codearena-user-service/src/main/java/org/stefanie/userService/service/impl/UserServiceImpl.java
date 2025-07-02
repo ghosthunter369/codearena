@@ -2,6 +2,7 @@ package org.stefanie.userService.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import common.ErrorCode;
@@ -286,6 +287,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         String key = RedisConstant.getUserSignInRedisKey(year, userId);
         RBitSet bitSet = redissonClient.getBitSet(key);
+        if(!bitSet.isExists()){
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "没有签到记录");
+        }
         BitSet bitset = BitSet.valueOf(bitSet.toByteArray());
         List<Integer> signInRecord = new ArrayList<>();
         for (int i = 0; i < bitset.length(); i++) {
