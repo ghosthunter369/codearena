@@ -2,21 +2,15 @@ package model.vo;
 
 import cn.hutool.json.JSONUtil;
 import lombok.Data;
+import model.dto.judge.JudgeConfig;
 import model.entity.Question;
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 题目视图
- *
-
- */
 @Data
-public class QuestionVO implements Serializable {
-
+public class QuestionVO {
     /**
      * id
      */
@@ -33,9 +27,27 @@ public class QuestionVO implements Serializable {
     private String content;
 
     /**
-     * 推荐答案
+     * 标签列表（json 数组）
      */
-    private String answer;
+    private List<String> tags;
+
+
+    /**
+     * 题目提交数
+     */
+    private Integer submitNum;
+
+    /**
+     * 题目通过数
+     */
+    private Integer acceptedNum;
+
+
+    /**
+     * 判题配置（json 对象）
+     */
+    private JudgeConfig judgeConfig;
+
 
     /**
      * 创建用户 id
@@ -51,19 +63,13 @@ public class QuestionVO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
-
     /**
-     * 标签列表
+     * 创建人
      */
-    private List<String> tagList;
-
+    private UserVO userVO;
+    private static final long serialVersionUID = 1L;
     /**
-     * 创建用户信息
-     */
-    private UserVO user;
-
-    /**
-     * 封装类转对象
+     * 包装类转对象
      *
      * @param questionVO
      * @return
@@ -72,15 +78,21 @@ public class QuestionVO implements Serializable {
         if (questionVO == null) {
             return null;
         }
-        Question question = new Question();
+        Question question=new Question();
         BeanUtils.copyProperties(questionVO, question);
-        List<String> tagList = questionVO.getTagList();
-        question.setTags(JSONUtil.toJsonStr(tagList));
+        List<String> tagList = questionVO.getTags();
+        if(tagList!=null){
+            question.setTags(JSONUtil.toJsonStr(tagList));
+        }
+        JudgeConfig voJudgeConfig = questionVO.getJudgeConfig();
+        if(voJudgeConfig!=null){
+            question.setJudgeConfig(JSONUtil.toJsonStr(voJudgeConfig));
+        }
         return question;
     }
 
     /**
-     * 对象转封装类
+     * 对象转包装类
      *
      * @param question
      * @return
@@ -91,7 +103,10 @@ public class QuestionVO implements Serializable {
         }
         QuestionVO questionVO = new QuestionVO();
         BeanUtils.copyProperties(question, questionVO);
-        questionVO.setTagList(JSONUtil.toList(JSONUtil.parseArray(question.getTags()), String.class));
+        List<String> tagList = JSONUtil.toList(question.getTags(), String.class);
+        questionVO.setTags(tagList);
+        String judgeConfigStr = question.getJudgeConfig();
+        questionVO.setJudgeConfig(JSONUtil.toBean(judgeConfigStr,JudgeConfig.class));
         return questionVO;
     }
 }

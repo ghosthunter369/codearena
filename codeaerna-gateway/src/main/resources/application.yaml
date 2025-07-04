@@ -148,13 +148,13 @@ knife4j:
       # ④ 第四行配置，聚合子服务全部为Swagger2规范的文档
       version: openapi3
 dubbo:
-  application:
-    name: codeaerna-gateway
-  registry:
-    address: nacos://127.0.0.1:8848
-    group: dubbo-group
-  protocol:
-    name: dubbo
-    port: -1 # 自动分配端口
-  provider:
-    timeout: 3000
+    application:
+      name: codearena-gateway
+    registry:
+      address: nacos://127.0.0.1:8848
+    protocol:
+      name: dubbo
+      port: -1 # 自动分配端口
+    consumer:
+      check: false # 启动时不检查服务提供者是否存在
+      group: dubbo-group # ⬅️ 加上这句，表示默认消费 dubbo-group 分组下的服务

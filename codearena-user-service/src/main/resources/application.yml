@@ -189,11 +189,11 @@ dubbo:
     name: codearena-user-service
   registry:
     address: nacos://127.0.0.1:8848
-    group: dubbo-group
   protocol:
     name: dubbo
-    port: -1 # 自动分配端口
+    port: -1
   provider:
     timeout: 3000
+    group: dubbo-group
   scan:
     base-packages: org.stefanie.userService.rpc

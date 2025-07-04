@@ -121,7 +121,7 @@ public class Question implements Serializable {
      *  判题用例（json 数组）
 
      */
-    private Object judgeCase;
+    private String judgeCase;
 
     /**
      * 判题配置（json 对象）
@@ -129,7 +129,7 @@ public class Question implements Serializable {
      *  判题配置（json 对象）
 
      */
-    private Object judgeConfig;
+    private String judgeConfig;
 
     /**
      * 题目类型（0-面试题，1-算法题）
