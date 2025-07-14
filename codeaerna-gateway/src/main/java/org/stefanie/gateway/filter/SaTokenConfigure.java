@@ -81,10 +81,8 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                     // Step2：是否需要角色校验
                     SaRouter.match("/api/user/add", r -> StpUtil.checkRole("admin"));
                     SaRouter.match("/api/user/edit", r -> StpUtil.checkRoleOr("user", "admin"));
-                    SaRouter.match("/api/question/hello", r -> StpUtil.checkRoleAnd( "admin"));
 
-
-                    //问题
+                    //Question模块
                     SaRouter.match("/api/question/add", r -> StpUtil.checkRole("admin"));
                     // 其他路径不限制角色，只需登录即可访问
                 })
