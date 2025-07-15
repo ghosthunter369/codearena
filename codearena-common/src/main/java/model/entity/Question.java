@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.Getter;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 题目
@@ -17,6 +20,7 @@ import java.util.Date;
 @Getter
 @TableName(value ="question")
 @Data
+@Document(indexName = "question")
 public class Question implements Serializable {
     /**
      * id
