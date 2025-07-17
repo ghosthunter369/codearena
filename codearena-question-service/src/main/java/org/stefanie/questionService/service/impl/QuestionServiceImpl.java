@@ -19,27 +19,29 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
 import org.stefanie.questionService.mapper.QuestionMapper;
+import org.stefanie.questionService.producer.QuestionMqProducer;
 import org.stefanie.questionService.service.QuestionService;
 import org.stefanie.serviceClient.UserRpcService;
 import utils.SqlUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
-*/
+ */
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
-    implements QuestionService {
+        implements QuestionService {
 
     @DubboReference(group = "dubbo-group")
     private UserRpcService userRpcService;
-    
-    
+
+    @Resource
+    private QuestionMqProducer questionMqProducer;
+
 
     @Override
     public void validQuestion(Question question, boolean add) {
@@ -116,7 +118,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
                 sortField);
         return queryWrapper;
     }
-    
+
 
     @Override
     public QuestionVO getQuestionVO(Question question, HttpServletRequest request) {
@@ -158,6 +160,33 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         return questionVOPage;
     }
 
+    @Override
+    public boolean save(Question question) {
+        boolean save = super.save(question);
+        if (question.getQuestionType() == 0) {
+            questionMqProducer.sendMessage(String.valueOf(question.getId()));
+        }
+        return save;
+    }
+
+    @Override
+    public boolean updateById(Question question) {
+        boolean save = super.save(question);
+        if (question.getQuestionType() == 0) {
+            questionMqProducer.sendMessage(String.valueOf(question.getId()));
+        }
+        return save;
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        Question question = this.getById(id);
+        boolean isRemove = super.removeById(id);
+        if (question.getQuestionType() == 0) {
+            questionMqProducer.sendMessage(String.valueOf(id));
+        }
+        return isRemove;
+    }
 }
 
 

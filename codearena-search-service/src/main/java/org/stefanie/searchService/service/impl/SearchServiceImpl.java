@@ -1,13 +1,10 @@
 package org.stefanie.searchService.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.question.QuestionQueryRequest;
 import model.entity.Post;
 import model.entity.Question;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -23,7 +20,6 @@ import org.stefanie.searchService.mapper.SearchMapper;
 import org.stefanie.searchService.service.SearchService;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +46,7 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Post> implement
     public List<Question> searchQuestion(QuestionQueryRequest question) {
         String title = question.getTitle();
         String content = question.getContent();
-        String tags = question.getTags();
+        List<String> tags = question.getTags();
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -75,17 +71,9 @@ public class SearchServiceImpl extends ServiceImpl<SearchMapper, Post> implement
             boolQueryBuilder.minimumShouldMatch(1);
         }
 
-        // ========= tags 精确过滤 =========
-        if (StringUtils.isNotBlank(tags)) {
-            List<String> tagList = Arrays.stream(tags.split(","))
-                    .map(String::trim)
-                    .filter(StringUtils::isNotBlank)
-                    .collect(Collectors.toList());
-            if (StringUtils.isNotBlank(tags)) {
-                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("tags.keyword", "*" + tags + "*"));
-            }
+        if (tags != null && !tags.isEmpty()) {
+            boolQueryBuilder.filter(QueryBuilders.termsQuery("tags.keyword", tags));
         }
-
         // ========= 构建查询：添加分页支持 =========
         int pageNum = Math.max(1, question.getCurrent());
         int pageSize = Math.min(100, Math.max(1, question.getPageSize()));

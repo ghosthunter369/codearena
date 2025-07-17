@@ -1,12 +1,13 @@
 package model.dto.question;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.Data;
 import model.entity.Question;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -14,12 +15,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-// todo 取消注释开启 ES（须先配置 ES）
-//@Document(indexName = "question")
+/**
+ * 题目 ES 包装类
+ *
+ */
+@Document(indexName = "question")
 @Data
 public class QuestionEsDTO implements Serializable {
 
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     /**
      * id
@@ -38,11 +42,6 @@ public class QuestionEsDTO implements Serializable {
     private String content;
 
     /**
-     * 答案
-     */
-    private String answer;
-
-    /**
      * 标签列表
      */
     private List<String> tags;
@@ -55,13 +54,13 @@ public class QuestionEsDTO implements Serializable {
     /**
      * 创建时间
      */
-    @Field(type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
+    @Field(index = false, store = true, type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @Field(type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
+    @Field(index = false, store = true, type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
     private Date updateTime;
 
     /**
@@ -84,7 +83,7 @@ public class QuestionEsDTO implements Serializable {
         QuestionEsDTO questionEsDTO = new QuestionEsDTO();
         BeanUtils.copyProperties(question, questionEsDTO);
         String tagsStr = question.getTags();
-        if (StrUtil.isNotBlank(tagsStr)) {
+        if (StringUtils.isNotBlank(tagsStr)) {
             questionEsDTO.setTags(JSONUtil.toList(JSONUtil.parseArray(tagsStr), String.class));
         }
         return questionEsDTO;

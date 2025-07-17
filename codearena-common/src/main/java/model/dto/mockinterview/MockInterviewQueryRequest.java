@@ -1,8 +1,9 @@
 package model.dto.mockinterview;
 
+import common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import common.PageRequest;
+
 import java.io.Serializable;
 
 /**

@@ -1,5 +1,7 @@
 package org.stefanie.searchService;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @ServletComponentScan
 @MapperScan("org.stefanie.searchService.mapper")
+@OpenAPIDefinition(info = @Info(title = "Search Service API", version = "1.0"))
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class SearchServiceApplication {
 
