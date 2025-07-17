@@ -46,9 +46,4 @@ public class QuestionMqConsumer {
         postEsService.savePostEsDTO(postEsDTO);
         channel.basicAck(deliveryTag, false);
     }
-
-    public static void main(String[] args) {
-        String a = null;
-        System.out.println(StringUtils.isEmpty(a));
-    }
 }

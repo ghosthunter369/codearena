@@ -16,6 +16,8 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+#        register-enabled: false
 
   # 数据库配置
   # todo 需替换配置
@@ -160,17 +162,6 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
-# 接口文档配置
-knife4j:
-  enable: true
-  openapi:
-    title: "接口文档"
-    version: 1.0
-    group:
-      default:
-        api-rule: package
-        api-rule-resources:
-          - org.stefanie.mapper.controller
 # AI 大模型接入（目前是火山引擎 DeepSeek）
 ai:
   apiKey: 填写自己的 API Key
@@ -185,7 +176,7 @@ springdoc:
       packages-to-scan: org.stefanie.searchService.controller
 dubbo:
   application:
-    name: codearena-question-service
+    name: codearena-question-service-dubbo
     qos-enable: false
   protocol:
     name: dubbo
@@ -196,6 +187,7 @@ dubbo:
   registry:
     address: nacos://127.0.0.1:8848
   consumer:
+    timeout: 10000
     check: false # 启动时不检查服务提供者是否存在
     group: dubbo-group # ⬅️ 加上这句，表示默认消费 dubbo-group 分组下的服务
   scan:

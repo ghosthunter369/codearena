@@ -3,6 +3,7 @@ package org.stefanie.userService.rpc;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import lombok.extern.slf4j.Slf4j;
 import model.vo.LoginUserVO;
 import org.apache.dubbo.config.annotation.DubboService;
 
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @DubboService(group = "dubbo-group")
+@Slf4j
 public class UserRpcServiceImpl implements UserRpcService {
 
     @Resource
@@ -26,7 +28,21 @@ public class UserRpcServiceImpl implements UserRpcService {
     }
     @Override
     public User getLoginUser(Long userId) {
-        return getUserById(userId);
+        log.info("getLoginUser userId = {}", userId);
+        try {
+            if (userService == null) {
+                log.error("userService is null, check dubbo provider config");
+                return null;
+            }
+            User user = userService.getById(userId);
+            if (user == null) {
+                log.warn("user not found in db, userId = {}", userId);
+            }
+            return user;
+        } catch (Exception e) {
+            log.error("getLoginUser error, userId = " + userId, e);
+            return null;
+        }
     }
 
     @Override
@@ -39,4 +55,4 @@ public class UserRpcServiceImpl implements UserRpcService {
         List<User> users = userService.listByIds(idList);
         return users;
     }
-} 
+}
