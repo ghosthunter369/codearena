@@ -176,7 +176,7 @@ springdoc:
       packages-to-scan: org.stefanie.searchService.controller
 dubbo:
   application:
-    name: codearena-search-service
+    name: codearena-gateway
   registry:
     address: nacos://127.0.0.1:8848
   protocol:
@@ -184,7 +184,7 @@ dubbo:
     port: -1 # 自动分配端口
   consumer:
     check: false # 启动时不检查服务提供者是否存在
-    group: dubbo-group # ⬅️ 加上这句，表示默认消费 dubbo-group 分组下的服务
+    group: dubbo-group
 logging:
   level:
     org.springdoc: DEBUG

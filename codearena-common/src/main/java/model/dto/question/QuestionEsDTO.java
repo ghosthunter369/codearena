@@ -54,13 +54,13 @@ public class QuestionEsDTO implements Serializable {
     /**
      * 创建时间
      */
-    @Field(index = false, store = true, type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
+    @Field(index = false, store = true, type = FieldType.Long)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @Field(index = false, store = true, type = FieldType.Date, format = {}, pattern = DATE_TIME_PATTERN)
+    @Field(index = false, store = true, type = FieldType.Long)
     private Date updateTime;
 
     /**
