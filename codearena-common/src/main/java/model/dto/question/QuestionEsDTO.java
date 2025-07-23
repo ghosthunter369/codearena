@@ -45,7 +45,10 @@ public class QuestionEsDTO implements Serializable {
      * 标签列表
      */
     private List<String> tags;
-
+    /**
+     * 答案
+     */
+    private String answer;
     /**
      * 创建用户 id
      */

@@ -285,6 +285,9 @@ public class QuestionController {
         if (!oldQuestion.getUserId().equals(loginUser.getId())) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
+
+
+
         boolean result = questionService.updateById(question);
         return ResultUtils.success(result);
     }

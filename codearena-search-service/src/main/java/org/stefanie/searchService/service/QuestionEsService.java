@@ -8,9 +8,12 @@ public interface QuestionEsService {
      * 保存
      *
      * @param questionEsDTO
-     * @return
      */
-    int saveQuestionEsDTO(QuestionEsDTO questionEsDTO);
+    void saveQuestionEsDTO(QuestionEsDTO questionEsDTO);
+    /**
+     * 更新
+     */
+    void updateQuestionEsDTO(QuestionEsDTO questionEsDTO);
 
     /**
      * 删除

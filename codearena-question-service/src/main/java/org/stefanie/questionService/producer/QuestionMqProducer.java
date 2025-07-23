@@ -6,6 +6,11 @@ import org.stefanie.questionService.config.RabbitMqConfig;
 
 import javax.annotation.Resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static enums.Question.QuestionMqEnum.QUESTION_ROUTINE;
+
 @Component
 public class QuestionMqProducer {
 
@@ -17,7 +22,10 @@ public class QuestionMqProducer {
      *
      * @param message
      */
-    public void sendMessage(String message) {
-        rabbitTemplate.convertAndSend(RabbitMqConfig.QUESTION_EXCHANGE_NAME, RabbitMqConfig.QUESTION_ROUTING_KEY, message);
+    public void sendMessage(String message,String operation) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("operation", operation);
+        payload.put("id", message);
+        rabbitTemplate.convertAndSend(RabbitMqConfig.QUESTION_EXCHANGE_NAME,QUESTION_ROUTINE.getValue() + operation , payload);
     }
 }

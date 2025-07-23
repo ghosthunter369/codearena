@@ -2,7 +2,6 @@ package org.stefanie.searchService.service.impl;
 
 import model.dto.question.QuestionEsDTO;
 import org.springframework.stereotype.Service;
-import org.stefanie.searchService.repository.PostEsRepository;
 import org.stefanie.searchService.repository.QuestionEsRepository;
 import org.stefanie.searchService.service.QuestionEsService;
 
@@ -13,9 +12,12 @@ public class QuestionEsServiceImpl implements QuestionEsService {
     private QuestionEsRepository questionEsRepository;
 
     @Override
-    public int saveQuestionEsDTO(QuestionEsDTO questionEsDTO) {
+    public void saveQuestionEsDTO(QuestionEsDTO questionEsDTO) {
         questionEsRepository.save(questionEsDTO);
-        return 0;
+    }
+
+    public void updateQuestionEsDTO(QuestionEsDTO questionEsDTO) {
+        questionEsRepository.save(questionEsDTO);
     }
 
     @Override

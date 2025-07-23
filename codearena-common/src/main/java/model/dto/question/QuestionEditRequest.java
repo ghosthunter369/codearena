@@ -49,6 +49,13 @@ public class QuestionEditRequest implements Serializable {
      * 判题配置（json 对象）
      */
     private JudgeConfig judgeConfig;
+    /**
+     * 题目类型（0-面试题，1-算法题）
+     * -- GETTER --
+     *  题目类型（0-面试题，1-算法题）
+
+     */
+    private Integer questionType;
 
     private static final long serialVersionUID = 1L;
 }

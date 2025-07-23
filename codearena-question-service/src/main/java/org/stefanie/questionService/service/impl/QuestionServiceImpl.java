@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import common.ErrorCode;
 import constant.CommonConstant;
+import enums.Question.QuestionMqEnum;
 import exception.BusinessException;
 import exception.ThrowUtils;
 import model.dto.question.QuestionQueryRequest;
@@ -164,16 +165,16 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
     public boolean save(Question question) {
         boolean save = super.save(question);
         if (question.getQuestionType() == 0) {
-            questionMqProducer.sendMessage(String.valueOf(question.getId()));
+            questionMqProducer.sendMessage(String.valueOf(question.getId()), QuestionMqEnum.INSERT.getValue());
         }
         return save;
     }
 
     @Override
     public boolean updateById(Question question) {
-        boolean save = super.save(question);
+        boolean save = super.updateById(question);
         if (question.getQuestionType() == 0) {
-            questionMqProducer.sendMessage(String.valueOf(question.getId()));
+            questionMqProducer.sendMessage(String.valueOf(question.getId()), QuestionMqEnum.UPDATE.getValue());
         }
         return save;
     }
@@ -183,7 +184,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         Question question = this.getById(id);
         boolean isRemove = super.removeById(id);
         if (question.getQuestionType() == 0) {
-            questionMqProducer.sendMessage(String.valueOf(id));
+            questionMqProducer.sendMessage(String.valueOf(question.getId()), QuestionMqEnum.DELETE.getValue());
         }
         return isRemove;
     }
