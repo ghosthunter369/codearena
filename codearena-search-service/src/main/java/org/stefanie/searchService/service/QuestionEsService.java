@@ -1,6 +1,7 @@
 package org.stefanie.searchService.service;
 
 import model.dto.question.QuestionEsDTO;
+import model.dto.question.QuestionQueryRequest;
 
 public interface QuestionEsService {
 

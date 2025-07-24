@@ -19,10 +19,14 @@ import model.vo.QuestionSubmitVO;
 import model.vo.QuestionVO;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.stefanie.questionService.service.QuestionService;
 import org.stefanie.questionService.service.QuestionSubmitService;
 import org.stefanie.questionService.util.SatokenUtil;
+import org.stefanie.serviceClient.SearchRpcService;
 import org.stefanie.serviceClient.UserRpcService;
 
 import javax.annotation.Resource;
@@ -46,6 +50,8 @@ public class QuestionController {
     private UserRpcService userRpcService;
     @Resource
     private Gson gson;
+    @DubboReference
+    private SearchRpcService searchRpcService;
 
 
     /**
@@ -196,6 +202,19 @@ public class QuestionController {
     public BaseResponse<Page<Question>> listQuestionByPage(@RequestBody QuestionQueryRequest questionQueryRequest, HttpServletRequest request) {
         long current = questionQueryRequest.getCurrent();
         long size = questionQueryRequest.getPageSize();
+        Integer questionType = questionQueryRequest.getQuestionType();
+        if(questionType == 0){
+            //从es查询
+            List<Question> questions = searchRpcService.searchQuestion(questionQueryRequest);
+            // 创建Page对象并设置数据
+            Page<Question> page = new Page<>();
+            page.setCurrent(current);       // 设置当前页码
+            page.setSize(size);             // 设置每页大小
+            page.setRecords(questions);     // 设置查询结果列表
+            page.setTotal(questions.size());// 设置总数（这里是当前页的数量，不是总记录数）
+
+            return ResultUtils.success(page);
+        }
         Page<Question> questionPage = questionService.page(new Page<>(current, size),
                 questionService.getQueryWrapper(questionQueryRequest));
         return ResultUtils.success(questionPage);

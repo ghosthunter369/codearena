@@ -101,12 +101,13 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         Long userId = questionQueryRequest.getUserId();
         String sortField = questionQueryRequest.getSortField();
         String sortOrder = questionQueryRequest.getSortOrder();
-
+        Integer questionType = questionQueryRequest.getQuestionType();
         // 拼接查询条件
 
         queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
         queryWrapper.like(StringUtils.isNotBlank(content), "content", content);
         queryWrapper.like(StringUtils.isNotBlank(answer), "answer", answer);
+        queryWrapper.eq("questionType",questionType);
         if (CollUtil.isNotEmpty(tags)) {
             for (String tag : tags) {
                 queryWrapper.like("tags", "\"" + tag + "\"");
