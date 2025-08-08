@@ -1,6 +1,7 @@
 package org.stefanie.aiService.app;
 
 import cn.hutool.json.JSONUtil;
+import org.stefanie.aiService.entity.Conversation;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,6 @@ import org.stefanie.aiService.advisor.MyLoggerAdvisor;
 import org.stefanie.aiService.common.common.BaseResponse;
 import org.stefanie.aiService.common.common.ResultUtils;
 import org.stefanie.aiService.entity.AIQuestionJudgeRequest;
-import org.stefanie.aiService.entity.AIQuestionJudgeResult;
-import org.stefanie.aiService.entity.Conversation;
 import org.stefanie.aiService.mapper.ConversationMapper;
 import reactor.core.publisher.Flux;
 
@@ -145,92 +144,6 @@ public class AiJudgeApp {
     }
     public String generateString(AIQuestionJudgeRequest message){
         return "题目标题" + message.getTitle() +","+ "题目描述" + message.getContent() +","+"代码" + message.getCode()+","+"判题用例" + message.getJudgeCase()+","+"判题配置" + message.getJudgeConfig();
-    }
-
-    record LoveReport(String title, List<String> suggestions) {
-
-    }
-
-    /**
-     * AI 恋爱报告功能（实战结构化输出）
-     *
-     * @param message
-     * @param chatId
-     * @return
-     */
-    public LoveReport doChatWithReport(String message, String chatId) {
-        LoveReport loveReport = chatClient
-                .prompt()
-                .system(SYSTEM_PROMPT + "每次对话后都要生成恋爱结果，标题为{用户名}的恋爱报告，内容为建议列表")
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                .call()
-                .entity(LoveReport.class);
-        log.info("loveReport: {}", loveReport);
-        return loveReport;
-    }
-
-    @Resource
-    VectorStore loveAppVectorStore;
-
-    public String doChatWithRAG(String message, String chatId) {
-        if (chatId == null) {
-            chatId = getFirstConversationID();
-        }
-        String finalChatId = chatId;
-        ChatResponse chatResponse = chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, finalChatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
-                .call()
-                .chatResponse();
-        String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
-        return content;
-    }
-
-    public Flux<String> doChatWithRAGStream(String message, String chatId) {
-        if (chatId == null) {
-            chatId = getFirstConversationID();
-        }
-        String finalChatId = chatId;
-
-        // 获取流式数据并拼接为一个字符串
-        return chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, finalChatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
-                .stream().content()
-                .flatMapSequential(Flux::just);
-    }
-    @Resource
-    private Advisor loveAppRagCloudAdvisor;
-    @Resource
-    private Advisor loveListRagCloudAdvisor;
-    public String doChatWithRagCloud(String message, String chatId) {
-        if (chatId == null) {
-            chatId = getFirstConversationID();
-        }
-        String finalChatId = chatId;
-        ChatResponse chatResponse = chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, finalChatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                // 开启日志，便于观察效果
-                .advisors(new MyLoggerAdvisor())
-                // 应用增强检索服务（云知识库服务）
-                .advisors(loveListRagCloudAdvisor)
-                .call()
-                .chatResponse();
-        String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
-        return content;
     }
 
 

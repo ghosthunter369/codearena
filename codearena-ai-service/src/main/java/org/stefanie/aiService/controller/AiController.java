@@ -25,28 +25,7 @@ public class AiController {
     public BaseResponse<AiJudgeApp.AIQuestionJudgeResult> doAiJudge(@RequestBody AIQuestionJudgeRequest message, @RequestParam(required = false)  String chatId) {
         return aiJudgeApp.doAiJudgeWithMysql(message, chatId);
     }
-    /**
-     * 内存流式RAG输出
-     * @param message
-     * @param chatId
-     * @return
-     */
-    @GetMapping(value = "/rag", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> doChatWithRAG(@RequestParam String message,
-                                      @RequestParam(required = false) String chatId) {
-        return loveApp.doChatWithRAGStream(message, chatId);
-    }
-    /**
-     * 百炼平台流式RAG输出
-     * @param message
-     * @param chatId
-     * @return
-     */
-    @GetMapping(value = "/ragCloud", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public String doChatWithRAGCloud(@RequestParam String message,
-                                      @RequestParam(required = false) String chatId) {
-        return loveApp.doChatWithRagCloud(message, chatId);
-    }
+
 
 }
 
